@@ -1,73 +1,77 @@
-# React + TypeScript + Vite
+# Interviewer Assistant
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Interviewer Assistant is a comprehensive web application designed to streamline and standardize the technical interview process across various platforms (e.g., Android, iOS, Flutter, React Native). It provides a structured approach for interviewers to evaluate candidates, ensuring consistency and thoroughness in assessments.
 
-Currently, two official plugins are available:
+## Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This application addresses common challenges in technical hiring by offering a centralized system to manage interview content, configure specific interview profiles, conduct live evaluations, and generate detailed reports. It aims to prevent redundant questioning, enforce standardized evaluation criteria, and simplify the feedback generation process for both L1 and L2 rounds of interviews.
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The Interviewer Assistant provides the following key functionalities:
 
-## Expanding the ESLint configuration
+*   **Platform & Knowledge Base Management:**
+    *   Define and manage various development platforms (e.g., "Android", "iOS").
+    *   For each platform, create a hierarchical "Areas of Evaluation" structure consisting of Categories and their associated Concepts.
+    *   Effortlessly add, edit, and delete Categories and Concepts, forming a reusable knowledge base for interviews.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+*   **Interview Configuration:**
+    *   Create and manage custom interview profiles for different hiring needs (e.g., "Android L1 Freshers", "iOS Senior 3+ YOE").
+    *   Configure L1 and L2 rounds for each interview profile, selecting relevant categories and concepts from the master knowledge base.
+    *   Ability to add ad-hoc custom categories and concepts specific to an interview profile without polluting the master data.
+    *   Clone existing interview profiles to quickly create new ones.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+*   **Interview Assistant (Execution Core):**
+    *   A dedicated interface for conducting live interviews.
+    *   Capture candidate details such as Name, Experience, and general Remarks.
+    *   Evaluate candidates on each category with a score (0-10) and concepts acting as checklists.
+    *   Real-time calculation of total scores based on configured category weights.
+    *   Automatic session recovery to prevent data loss during accidental refreshes or browser closures.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+*   **Output Generation:**
+    *   **Copy Report:** Generate a clipboard-ready text summary of the interview results.
+    *   **Download PDF Report:** Create and download a professionally formatted PDF report of the interview, including candidate details, evaluation breakdown, and overall scores.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+*   **Persistence & Deployment:**
+    *   **File-Based Persistence:** Data is stored in a lightweight `db.json` file, managed by a Node.js/Express backend.
+    *   **Dockerized Deployment:** The entire application (frontend and backend) is containerized using Docker, allowing for easy deployment and ensuring data persistence via Docker volumes.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+*   **Frontend:**
+    *   **React:** A declarative, component-based JavaScript library for building user interfaces.
+    *   **Vite:** A lightning-fast build tool and development server for modern web projects.
+    *   **TypeScript:** A typed superset of JavaScript that compiles to plain JavaScript.
+    *   **Tailwind CSS:** A utility-first CSS framework for rapidly building custom designs.
+    *   **Zustand:** A small, fast, and scalable bear-necessities state-management solution for React.
+    *   **React Router:** Declarative routing for React applications.
+    *   **Lucide React:** A beautiful and consistent icon library.
+    *   **jspdf & jspdf-autotable:** Libraries for client-side PDF generation.
+*   **Backend:**
+    *   **Node.js & Express.js:** A minimal and flexible Node.js web application framework, handling API requests and file-based data persistence.
+*   **Containerization:**
+    *   **Docker:** Platform for developing, shipping, and running applications in containers.
+    *   **Nginx:** High-performance web server used to serve the React frontend and proxy API requests.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Getting Started
+
+To get a local copy up and running, follow these simple steps. The application is designed to be run as Docker containers.
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/interviewer-assistant.git
+    cd interviewer-assistant
+    ```
+2.  **Build and run the Docker containers:**
+    ```bash
+    docker compose up --build
+    ```
+3.  **Access the application:**
+    Open your web browser and navigate to `http://localhost:8080`.
+
+## Usage
+
+*   **Manage Platforms:** Start by adding new platforms from the "Manage Platforms" section.
+*   **Manage Areas of Evaluation:** Configure categories and concepts for each platform.
+*   **Manage Platform Interviews:** Create and customize interview profiles, selecting relevant evaluation criteria for L1 and L2 rounds.
+*   **Conduct Interviews:** Use the "Interview Assistant" to conduct structured interviews, score candidates, and generate reports.
