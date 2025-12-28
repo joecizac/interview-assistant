@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Copy, FileText, RefreshCw, CheckCircle2, Circle } from 'lucide-react';
+import { Copy, RefreshCw, CheckCircle2, Circle, Download } from 'lucide-react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { useAppStore } from '../store/useAppStore';
 import { useSessionStore } from '../store/useSessionStore';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { cn } from '../lib/utils';
-import type { InterviewRoundConfig } from '../types/core';
 
 export const InterviewSessionPage = () => {
   const navigate = useNavigate();
@@ -104,6 +105,63 @@ export const InterviewSessionPage = () => {
     alert('Report copied to clipboard!');
   };
 
+  const handleGeneratePDF = () => {
+    const doc = new jsPDF();
+
+    // Header
+    doc.setFontSize(20);
+    doc.text('Interview Report', 14, 22);
+    
+    doc.setFontSize(12);
+    doc.text(`${interview.name} - ${round.toUpperCase()} Round`, 14, 32);
+
+    // Section 1: Candidate Details
+    doc.setFontSize(14);
+    doc.text('Candidate Details', 14, 45);
+    
+    const detailsData = [
+      ['Name', candidateName],
+      ['Experience', `${experience} Years`],
+      ['Total Score', `${finalTotalScore.toFixed(2)} / 100`],
+      ['Remarks', remarks || 'N/A']
+    ];
+
+    autoTable(doc, {
+      startY: 50,
+      head: [['Field', 'Value']],
+      body: detailsData,
+      theme: 'plain',
+      styles: { fontSize: 10 },
+      columnStyles: { 0: { fontStyle: 'bold', cellWidth: 40 } },
+    });
+
+    // Section 2: Evaluation Breakdown
+    const finalY = (doc as any).lastAutoTable.finalY + 15;
+    
+    doc.setFontSize(14);
+    doc.text('Evaluation Breakdown', 14, finalY);
+
+    const tableData = categoryScores.map(cat => [
+      cat.name,
+      cat.weight,
+      `${cat.rawScore} / 10`,
+      `${cat.contribution.toFixed(2)}`
+    ]);
+
+    autoTable(doc, {
+      startY: finalY + 5,
+      head: [['Category', 'Weight', 'Score', 'Contribution']],
+      body: tableData,
+      theme: 'striped',
+      headStyles: { fillColor: [66, 139, 202] },
+      foot: [['', '', 'Total Score', finalTotalScore.toFixed(2)]],
+      footStyles: { fontStyle: 'bold', fillColor: [240, 240, 240], textColor: [0, 0, 0] }
+    });
+
+    // Save
+    doc.save(`Interview_Report_${candidateName || 'Candidate'}.pdf`);
+  };
+
   return (
     <div className="space-y-6 pb-20">
       {/* Header */}
@@ -170,8 +228,8 @@ export const InterviewSessionPage = () => {
                <Button className="w-full" onClick={handleCopyReport}>
                  <Copy className="mr-2 h-4 w-4" /> Copy Report
                </Button>
-               <Button variant="outline" className="w-full">
-                 <FileText className="mr-2 h-4 w-4" /> Generate Cover Letter
+               <Button variant="outline" className="w-full" onClick={handleGeneratePDF}>
+                 <Download className="mr-2 h-4 w-4" /> Download PDF Report
                </Button>
              </div>
           </div>

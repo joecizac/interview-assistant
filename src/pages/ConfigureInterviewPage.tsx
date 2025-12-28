@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CheckSquare } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
@@ -30,10 +29,10 @@ export const ConfigureInterviewPage = () => {
     
     // Handle legacy array format (if exists) or missing obj
     if (Array.isArray(roundConfig)) {
-      return { concepts: roundConfig, weight: 5 };
+      return { concepts: roundConfig, weight: 0 };
     }
     if (!roundConfig) {
-      return { concepts: [], weight: 5 };
+      return { concepts: [], weight: 0 };
     }
     return roundConfig;
   };
@@ -142,8 +141,8 @@ export const ConfigureInterviewPage = () => {
                       className={cn(
                         "flex h-6 w-6 items-center justify-center rounded border transition-colors",
                         isChecked(category.id, concept.id, 'l2')
-                          ? "border-indigo-600 bg-indigo-600 text-white"
-                          : "border-slate-300 bg-white text-transparent hover:border-indigo-400"
+                          ? "border-orange-600 bg-orange-600 text-white"
+                          : "border-slate-300 bg-white text-transparent hover:border-orange-400"
                       )}
                       disabled={getWeight(category.id, 'l2') === 0}
                     >

@@ -1,8 +1,12 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { Platform, InterviewProfile, Category, Concept } from '../types/core';
+import type { Platform, InterviewProfile } from '../types/core'; // Removed Category, Concept
+import { apiStorage } from './apiStorage';
 
 interface AppState {
+  _hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
+
   platforms: Platform[];
   interviews: InterviewProfile[];
 
@@ -32,6 +36,9 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
+      _hasHydrated: false,
+      setHasHydrated: (state) => set({ _hasHydrated: state }),
+
       platforms: [],
       interviews: [],
 
@@ -201,16 +208,16 @@ export const useAppStore = create<AppState>()(
 
             // Initialize with default structure if missing
             const currentConfig = i.config[categoryId] || { 
-              l1: { concepts: [], weight: 5 }, 
-              l2: { concepts: [], weight: 5 } 
+              l1: { concepts: [], weight: 0 }, 
+              l2: { concepts: [], weight: 0 } 
             };
             
             // Handle legacy data where l1/l2 might be arrays instead of objects
             let roundConfig = currentConfig[round];
             if (Array.isArray(roundConfig)) {
-               roundConfig = { concepts: roundConfig, weight: 5 };
+               roundConfig = { concepts: roundConfig, weight: 0 };
             } else if (!roundConfig) {
-               roundConfig = { concepts: [], weight: 5 };
+               roundConfig = { concepts: [], weight: 0 };
             }
 
             const currentConcepts = roundConfig.concepts;
@@ -242,15 +249,15 @@ export const useAppStore = create<AppState>()(
             if (i.id !== interviewId) return i;
 
             const currentConfig = i.config[categoryId] || { 
-              l1: { concepts: [], weight: 5 }, 
-              l2: { concepts: [], weight: 5 } 
+              l1: { concepts: [], weight: 0 }, 
+              l2: { concepts: [], weight: 0 } 
             };
 
             let roundConfig = currentConfig[round];
             if (Array.isArray(roundConfig)) {
-               roundConfig = { concepts: roundConfig, weight: 5 };
+               roundConfig = { concepts: roundConfig, weight: 0 };
             } else if (!roundConfig) {
-               roundConfig = { concepts: [], weight: 5 };
+               roundConfig = { concepts: [], weight: 0 };
             }
 
             return {
@@ -271,7 +278,10 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'interviewer-assistant-storage',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => apiStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

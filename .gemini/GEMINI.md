@@ -82,7 +82,7 @@ DO NOT start coding without confirmation.
     *   *Reasoning:* Minimal boilerplate compared to Redux, perfect for managing the complex nested state of 
     platforms/interviews.
 *   **Routing:** **React Router**.
-*   **Icons:** Lucide React.
+    *   **Icons:** Lucide React.
 *   **Persistence Strategy:**
     *   **Phase 1 (MVP):** Browser **LocalStorage**. Data is local to the specific user's machine.
     *   **Phase 2 (Docker/Shared):** A lightweight Node.js/Express backend reading/writing to a `db.json` file. Th
@@ -127,6 +127,9 @@ DO NOT start coding without confirmation.
         *   Render accordion/list of Categories active for the selected Profile.
         *   Input field for **Category Score** (0-10).
         *   Display list of concepts under each category as reminders/checklists.
+        *   **Weighted Score Logic:**
+            *   **Configuration:** Each Category has a Weight (0-10) per round.
+            *   **Calculation:** `TotalScore = Sum( (RawScore/10) * (CategoryWeight/TotalWeightSum) * 100 )`
     *   **Live Totals:** Auto-calculate total score based on inputs.
     *   **Session Recovery:** Auto-save current interview state (scores, candidate info) to LocalStorage to preven
     data loss on accidental refresh/close.
@@ -199,8 +202,21 @@ DO NOT start coding without confirmation.
 
   
 ## 7. Changelog (for Gemini's use)
-  
+*   **Phases 1-5 Complete:** Implemented all core features, persistence, and containerization.
+*   **UI Updates:** 
+    *   Removed number up-down spinners.
+    *   Implemented decimal input with constraints: Experience (0-15), Score (0-10), both supporting 1 decimal place.
+    *   **Configure Interview Page:** Default weight for categories set to 0. L2 checkbox color changed to dark orange.
+    *   **Interviews Page:** L2 Round option in "Start Interview" popup now matches the orange checkbox color.
+*   **Fixes:** 
+    *   Resolved TypeScript build errors and updated Docker configuration.
+    *   **Bug Fix (Configure Interview Page):** Corrected the default weight initialization in `useAppStore.ts` so that changing one round's weight does not implicitly set the other round's default weight to 5.
+*   **Feature:** Implemented **PDF Report Generation** using `jspdf` and `jspdf-autotable`. Replaced "Generate Cover Letter" with "Download PDF Report".
+*   **Verification Complete:** Docker-compose deployment and all functionalities tested and verified as working.
 
 
 ## 8. Active Tasks (for Gemini's use)
-
+*   **Project Maintenance:** 
+    *   Monitor for user feedback or bug reports.
+    *   **Future Enhancements:** Consider modifying PDF report format (as noted by user).
+    *   Potential future enhancements (e.g., Authentication, Migration to a more robust database like PostgreSQL or MongoDB).

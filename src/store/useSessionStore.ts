@@ -40,9 +40,9 @@ export const useSessionStore = create<SessionState>()(
         scores: {},
       }),
 
-      updateCandidate: (field, value) => set((state) => ({
+      updateCandidate: (field, value) => set({
         [field]: value
-      })),
+      }),
 
       setScore: (categoryId, score) => set((state) => ({
         scores: {

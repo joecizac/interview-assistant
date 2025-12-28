@@ -1,22 +1,23 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
+import { Component } from 'react'; // React needs to be imported for Component class
 
 interface Props {
-  children?: ReactNode;
+  children: ReactNode;
+  fallback: ReactNode;
 }
 
 interface State {
   hasError: boolean;
-  error: Error | null;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false,
-    error: null,
+    hasError: false
   };
 
-  public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  public static getDerivedStateFromError(_: Error): State {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -25,19 +26,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      return (
-        <div className="p-6">
-          <h1 className="text-xl font-bold text-red-600">Something went wrong.</h1>
-          <pre className="mt-4 rounded bg-slate-100 p-4 text-sm text-slate-800">
-            {this.state.error?.message}
-          </pre>
-          <pre className="mt-2 text-xs text-slate-500">
-            {this.state.error?.stack}
-          </pre>
-        </div>
-      );
+      return this.props.fallback;
     }
 
     return this.props.children;
   }
 }
+
+export default ErrorBoundary;

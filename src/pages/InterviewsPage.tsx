@@ -182,10 +182,10 @@ export const InterviewsPage = () => {
               </button>
 
               <button
-                className="flex h-20 flex-col items-center justify-center rounded-lg border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50 transition-all"
+                className="flex h-20 flex-col items-center justify-center rounded-lg border border-slate-200 hover:border-orange-500 hover:bg-orange-50 transition-all"
                 onClick={() => handleStart('l2')}
               >
-                <span className="text-lg font-bold text-indigo-700">L2 Round</span>
+                <span className="text-lg font-bold text-orange-700">L2 Round</span>
                 <span className="text-xs text-slate-500">Advanced technical round</span>
               </button>
             </div>

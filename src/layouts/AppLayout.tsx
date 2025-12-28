@@ -1,14 +1,27 @@
-import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { LayoutDashboard, Layers, Users, Menu } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useAppStore } from '../store/useAppStore';
 
 export const AppLayout = () => {
+  const hasHydrated = useAppStore((state) => state._hasHydrated);
+
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: 'Interview Assistant' },
     { to: '/platforms', icon: Layers, label: 'Manage Platforms' },
     { to: '/interviews', icon: Users, label: 'Manage Interviews' },
   ];
+
+  if (!hasHydrated) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50">
+        <div className="text-center">
+          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent mx-auto"></div>
+          <p className="text-sm text-slate-500">Loading Assistant Data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen w-full bg-slate-50">

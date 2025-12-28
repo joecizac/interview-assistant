@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash2, LayoutList, Tag } from 'lucide-react';
+import { Plus, Trash2, LayoutList, Tag } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
