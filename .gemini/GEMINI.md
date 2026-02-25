@@ -17,7 +17,7 @@ Also there should be some standardisation in the process, so that the candidates
 
 To make this interview process more simple and consistent for the interview panel, across the different platforms, I want develop an interviewer assistant as a web app. 
 
-The mocks for the requirement could be found in the file @Interviewer-Assistant.png
+The mocks for the requirement could be found in the file ./artefacts/Interviewer-Assistant.png
 
 
 ## 3. Requirement Details (Read Only)
@@ -201,6 +201,12 @@ DO NOT start coding without confirmation.
 6. IT IS VERY IMPORTANT THAT YOU ask me as many questions required, so that we have the best understanding between us. DO NOT ASSUME AND GENERATE CODE DIRECTLY.    
 
   
+## Gemini Added Memories
+- The user has approved the "file-based persistence" strategy (LocalStorage first, then JSON/SQLite) and is ready to start execution of Phase 1.
+- The user has restarted Phase 1 execution because previous tasks (Initialize Vite project, Install dependencies) were deleted or incomplete.
+- The user has approved proceeding to Phase 2 of the "Interviewer Assistant" project.
+- The user has explicitly requested to NOT implement Phase 6 until further notice. Phase 5 (Dockerization) is the current focus.
+
 ## 7. Changelog (for Gemini's use)
 *   **Phases 1-5 Complete:** Implemented all core features, persistence, and containerization.
 *   **UI Updates:** 
